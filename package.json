@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "g-i-s": "^2.1.5",
     "pixelmatch": "^5.1.0"
   }
 }
