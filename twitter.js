@@ -10,11 +10,11 @@ const client = new Twitter({
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_KEY,
 });
 
-function sendReply(status, in_reply_to_status_id = null) {
-  client.post('statuses/update', {
-    status,
-    in_reply_to_status_id,
-    username: '@slotheveryhour',
+function sendReplies(first, second) {
+  client.post('statuses/update', first).then(tweet => {
+    const replyId = tweet.id_str;
+    second.in_reply_to_status_id = replyId;
+    client.post('statuses/update', second);
   });
 }
 function sendTweet(imagePath, sloth) {
@@ -32,10 +32,17 @@ function sendTweet(imagePath, sloth) {
         if (!error) {
           console.log('Sent Tweet.');
           const tweetId = tweet.id_str;
-          sendReply(`Link to Photographer: ${sloth.creator_url}`, tweetId);
-          sendReply(
-            `Photo License: ${sloth.license} => ${sloth.license_url}`,
-            tweetId
+          sendReplies(
+            {
+              status: `Link to Photographer: ${sloth.creator_url}`,
+              in_reply_to_status_id: tweetId,
+              username: '@slotheveryhour',
+            },
+            {
+              status: `Photo License: ${sloth.license} => ${sloth.license_url}`,
+              in_reply_to_status_id: null,
+              username: '@slotheveryhour',
+            }
           );
         }
       });
