@@ -61,6 +61,7 @@ async function getSlothThenTweet(cb) {
 }
 // sendTweet('sloth.jpg');
 
+getSlothThenTweet(sendTweet);
 setInterval(() => {
   getSlothThenTweet(sendTweet);
 }, 3600000);
